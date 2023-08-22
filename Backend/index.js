@@ -1,12 +1,13 @@
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
-const app = express();
-const port = 3000;
-
 require('dotenv').config();
 
+const app = express();
+const port = process.env.PORT || 3000; // Use the port from the environment variable if available
+
 app.use(cors());
+
 
 app.get('/search', async (req, res) => {
     try {

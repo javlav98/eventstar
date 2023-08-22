@@ -1,26 +1,69 @@
-/* Add this CSS to your App.css file or your preferred styling approach */
-
-.search-bar {
+.App {
+    text-align: center;
+    padding: 2vw; /* Using viewport units for padding */
+    font-family: Arial, sans-serif;
+  }
+  
+  h1 {
+    margin-bottom: 2vw; /* Using viewport units for margin */
+  }
+  
+  .search-bar {
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2vw; /* Using viewport units for margin */
+    border: 1px solid #ccc; /* Adding a border */ /* Adding padding to mimic a single search bar */
+    border-radius: 4px;
+    padding: 1vw; /* Using viewport units for padding */
+  }
+  
+  .search-bar input[type="text"],
+  .search-bar input[type="date"],
+  .search-bar select,
+  .search-bar button {
+ /* Using viewport units for padding */
+    border: none; /* Remove individual borders */
+    font-size: 1.5vw; /* Using viewport units for font size */
+    flex: 1; /* Allow items to expand and fill available space */
+    border-radius: 5px;
+    padding: 1vw; /* Using viewport units for padding */
+    margin: 2px;
+  }
+  
+  .search-bar button {
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .search-bar button:hover {
+    background-color: #0056b3;
+  }
+  
+  .location-input {
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
+    gap: 1vw; /* Using viewport units for gap */
   }
   
-  .search-input {
-    padding: 10px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    outline: none;
-    flex: 1;
+  h2 {
+    margin-top: 2vw; /* Using viewport units for margin */
   }
   
-  .search-button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  li {
+    margin-bottom: 1vw; /* Using viewport units for margin */
+    padding: 1.5vw; /* Using viewport units for padding */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    font-size: 1.5vw; /* Using viewport units for font size */
   }
   
