@@ -5,7 +5,7 @@ import './App.css';
 function App() {
   const [keyword, setKeyword] = useState('');
   const [date, setDate] = useState('');
-  const [locationType, setLocationType] = useState('city'); // 'city', 'zipcode', or 'userLocation'
+  const [locationType, setLocationType] = useState('city');
   const [locationValue, setLocationValue] = useState('');
   const [eventData, setEventData] = useState([]);
   const [userLocation, setUserLocation] = useState(null);
@@ -30,26 +30,39 @@ function App() {
     e.preventDefault();
 
     try {
-      const location = locationType === 'userLocation'
-        ? { latitude: userLocation.latitude, longitude: userLocation.longitude }
-        : locationValue;
+      let locationParams = {};
+
+      if (locationType === 'userLocation' && userLocation) {
+        locationParams = {
+          latlong: `${userLocation.latitude},${userLocation.longitude}`,
+        };
+      } else if (locationType === 'zipcode') {
+        locationParams = {
+          postalCode: locationValue,
+        };
+      } else if (locationType === 'city') {
+        locationParams = {
+          city: locationValue,
+        };
+      }
 
       const response = await axios.get('http://localhost:3000/search', {
         params: {
           keyword,
           date,
-          location,
-          locationType,
+          ...locationParams,
         },
       });
-
+      
       let eventsArray = [];
-
-      if (Array.isArray(response.data._embedded.events)) {
+      
+      if (response.data._embedded && Array.isArray(response.data._embedded.events)) {
         eventsArray = response.data._embedded.events;
       }
-
+      
       setEventData(eventsArray);
+      
+
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -91,14 +104,15 @@ function App() {
         <button type="submit">Search</button>
       </form>
 
-      <div>
-        <h2>Search Results</h2>
-        <ul>
-          {eventData.map((event) => (
-            <li key={event.id}>{event.name}</li>
-          ))}
-        </ul>
-      </div>
+      <div className="event-cards-container">
+  {eventData.map((event) => (
+    <div key={event.id} className="event-card">
+      <h3>{event.name}</h3>
+      {/* You can display more event information here */}
+    </div>
+  ))}
+</div>
+
     </div>
   );
 }

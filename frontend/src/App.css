@@ -52,18 +52,25 @@
   h2 {
     margin-top: 2vw; /* Using viewport units for margin */
   }
+
+/* Add these styles to your CSS */
+/* Add these styles to your CSS */
+.event-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  gap: 2vw;
+  margin-bottom: 2vw;
   
-  ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  li {
-    margin-bottom: 1vw; /* Using viewport units for margin */
-    padding: 1.5vw; /* Using viewport units for padding */
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: #f9f9f9;
-    font-size: 1.5vw; /* Using viewport units for font size */
-  }
-  
+}
+
+.event-card {
+  width: 40vw;
+  margin-bottom: 2vw;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 1vw;
+}
+
+
+
