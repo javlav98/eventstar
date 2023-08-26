@@ -33,7 +33,24 @@ app.get('/search', async (req, res) => {
   }
 });
 
+app.get('/discovery/v2/events/:id/images', async (req, res) => {
+  try {
+    const eventId = req.params.id;
+    
+    const response = await axios.get(`https://app.ticketmaster.com/discovery/v2/events/${eventId}/images.json`, {
+      params: {
+        apikey: process.env.TICKETMASTER_API_KEY,
+      },
+    });
+
+    const imagesData = response.data;
+    res.json(imagesData);
+  } catch (error) {
+    console.error('Error fetching images:', error);
+    res.status(500).send('An error occurred while fetching images from Ticketmaster.');
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
- 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import EventImages from './EventImg'; // Update with the correct path
 import './App.css';
 
 function App() {
@@ -59,14 +60,43 @@ function App() {
       if (response.data._embedded && Array.isArray(response.data._embedded.events)) {
         eventsArray = response.data._embedded.events;
       }
-      
-      setEventData(eventsArray);
-      
 
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
+      const eventsWithDetails = eventsArray.map(event => {
+        const localDate = event.dates && event.dates.start ? event.dates.start.localDate : 'Date not available';
+        const localTime = event.dates && event.dates.start ? event.dates.start.localTime : 'Time not available';
+      
+        let formattedDate = localDate;
+        if (localTime && localTime !== 'Time not available') {
+          // Concatenate date and time strings in a format that can be parsed by Date
+          formattedDate = `${localDate}T${localTime}`;
+        }
+
+        const priceRange = event.priceRanges && event.priceRanges.length > 0 ? event.priceRanges[0] : null;
+        const price = priceRange
+          ? `$${priceRange.min.toFixed(2)} - $${priceRange.max.toFixed(2)} ${priceRange.currency}`
+          : 'Price not available';
+
+          return {
+            id: event.id,
+            name: event.name,
+            image: event.images && event.images.length > 0 ? event.images[0].url : null,
+            link: event.url,
+            price: price,
+            time: localTime !== 'Time not available' ? new Date(formattedDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', timeZoneName: 'short' }) : 'Time not available',
+            date: localDate,
+          };
+        });
+
+
+    setEventData(eventsWithDetails);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+};
+
+function truncateLink(link, maxLength) {
+  return link.length > maxLength ? link.slice(0, maxLength) : link;
+}
 
   return (
     <div className="App">
@@ -103,15 +133,25 @@ function App() {
         </div>
         <button type="submit">Search</button>
       </form>
-
       <div className="event-cards-container">
   {eventData.map((event) => (
     <div key={event.id} className="event-card">
       <h3>{event.name}</h3>
-      {/* You can display more event information here */}
+      {event.image && <img src={event.image} alt={event.name} className="event-image" />}
+      {event.link && (
+        <a href={event.link} target="_blank" rel="noopener noreferrer">
+          {truncateLink(event.link, 30)} {/* Display truncated link */}
+          {event.link.length > 30 && '...'} {/* Display ellipsis if link is longer */}
+        </a>
+      )}
+      <p>Price: {event.price}</p>
+      <p>Date: {event.date}</p>
+      <p>Time: {event.time}</p>
     </div>
   ))}
 </div>
+
+
 
     </div>
   );
